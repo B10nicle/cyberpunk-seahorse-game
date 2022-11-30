@@ -1,6 +1,6 @@
 window.addEventListener("load", function () {
   //canvas setup
-  const canvas = this.document.getElementById("canvas1");
+  const canvas = this.document.querySelector("canvas");
   const ctx = canvas.getContext("2d");
   canvas.width = 1000;
   canvas.height = 500;
@@ -8,43 +8,23 @@ window.addEventListener("load", function () {
   class InputHandler {
     constructor(game) {
       this.game = game;
-      window.addEventListener("keydown", (event) => {
+      window.addEventListener("keydown", (e) => {
         if (
-          (event.key === "ArrowUp" || event.key === "ArrowDown") &&
-          this.game.keys.indexOf(event.key) === -1
+          (e.key === "ArrowUp" || e.key === "ArrowDown") &&
+          this.game.keys.indexOf(e.key) === -1
         ) {
-          this.game.keys.push(event.key);
-        } else if (event.key === " ") {
+          this.game.keys.push(e.key);
+        } else if (e.key === " ") {
           this.game.player.shootTop();
-        } else if (event.key === "d") {
+        } else if (e.key === "d") {
           this.game.debug = !this.game.debug;
         }
       });
-      window.addEventListener("keyup", (event) => {
-        if (this.game.keys.indexOf(event.key) > -1) {
-          this.game.keys.splice(this.game.keys.indexOf(event.key), 1);
+      window.addEventListener("keyup", (e) => {
+        if (this.game.keys.indexOf(e.key) > -1) {
+          this.game.keys.splice(this.game.keys.indexOf(e.key), 1);
         }
       });
-    }
-  }
-
-  class Projectile {
-    constructor(game, x, y) {
-      this.game = game;
-      this.x = x;
-      this.y = y;
-      this.width = 10;
-      this.height = 3;
-      this.speed = 3;
-      this.markedForDeletion = false;
-      this.image = document.getElementById("projectile");
-    }
-    update() {
-      this.x += this.speed;
-      if (this.x > this.game.width * 0.8) this.markedForDeletion = true;
-    }
-    draw(context) {
-      context.drawImage(this.image, this.x, this.y);
     }
   }
 
@@ -53,7 +33,7 @@ window.addEventListener("load", function () {
       this.game = game;
       this.x = x;
       this.y = y;
-      this.image = document.getElementById("gears");
+      this.image = document.querySelector(".gears");
       this.frameX = Math.floor(Math.random() * 3);
       this.frameY = Math.floor(Math.random() * 3);
       this.spriteSize = 50;
@@ -102,6 +82,26 @@ window.addEventListener("load", function () {
     }
   }
 
+  class Projectile {
+    constructor(game, x, y) {
+      this.game = game;
+      this.x = x;
+      this.y = y;
+      this.width = 10;
+      this.height = 3;
+      this.speed = 3;
+      this.markedForDeletion = false;
+      this.image = document.querySelector(".projectile");
+    }
+    update() {
+      this.x += this.speed;
+      if (this.x > this.game.width * 0.8) this.markedForDeletion = true;
+    }
+    draw(context) {
+      context.drawImage(this.image, this.x, this.y);
+    }
+  }
+
   class Player {
     constructor(game) {
       this.game = game;
@@ -115,7 +115,7 @@ window.addEventListener("load", function () {
       this.speedY = 0;
       this.maxSpeed = 3;
       this.projectiles = [];
-      this.image = document.getElementById("player");
+      this.image = document.querySelector(".player");
       this.powerUp = false;
       this.powerUpTimer = 0;
       this.powerUpLimit = 10000;
@@ -243,7 +243,7 @@ window.addEventListener("load", function () {
       this.width = 228;
       this.height = 169;
       this.y = Math.random() * (this.game.height * 0.95 - this.height);
-      this.image = document.getElementById("angler1");
+      this.image = document.querySelector(".angler1");
       this.frameY = Math.floor(Math.random() * 3);
       this.lives = 5;
       this.score = this.lives;
@@ -256,7 +256,7 @@ window.addEventListener("load", function () {
       this.width = 213;
       this.height = 165;
       this.y = Math.random() * (this.game.height * 0.95 - this.height);
-      this.image = document.getElementById("angler2");
+      this.image = document.querySelector(".angler2");
       this.frameY = Math.floor(Math.random() * 2);
       this.lives = 6;
       this.score = this.lives;
@@ -269,7 +269,7 @@ window.addEventListener("load", function () {
       this.width = 99;
       this.height = 95;
       this.y = Math.random() * (this.game.height * 0.95 - this.height);
-      this.image = document.getElementById("lucky");
+      this.image = document.querySelector(".lucky");
       this.frameY = Math.floor(Math.random() * 2);
       this.lives = 3;
       this.score = 15;
@@ -283,7 +283,7 @@ window.addEventListener("load", function () {
       this.width = 400;
       this.height = 227;
       this.y = Math.random() * (this.game.height * 0.95 - this.height);
-      this.image = document.getElementById("hivewhale");
+      this.image = document.querySelector(".hivewhale");
       this.frameY = 0;
       this.lives = 20;
       this.score = this.lives;
@@ -299,7 +299,7 @@ window.addEventListener("load", function () {
       this.height = 95;
       this.x = x;
       this.y = y;
-      this.image = document.getElementById("drone");
+      this.image = document.querySelector(".drone");
       this.frameY = Math.floor(Math.random() * 2);
       this.lives = 3;
       this.score = this.lives;
@@ -331,10 +331,10 @@ window.addEventListener("load", function () {
   class Background {
     constructor(game) {
       this.game = game;
-      this.image1 = document.getElementById("layer1");
-      this.image2 = document.getElementById("layer2");
-      this.image3 = document.getElementById("layer3");
-      this.image4 = document.getElementById("layer4");
+      this.image1 = document.querySelector(".layer1");
+      this.image2 = document.querySelector(".layer2");
+      this.image3 = document.querySelector(".layer3");
+      this.image4 = document.querySelector(".layer4");
       this.layer1 = new Layer(this.game, this.image1, 0.2);
       this.layer2 = new Layer(this.game, this.image2, 0.4);
       this.layer3 = new Layer(this.game, this.image3, 1);
@@ -393,14 +393,14 @@ window.addEventListener("load", function () {
   class SmokeExplostion extends Explosion {
     constructor(game, x, y) {
       super(game, x, y);
-      this.image = document.getElementById("smokeExplosion");
+      this.image = document.querySelector(".smokeExplosion");
     }
   }
 
   class FireExplostion extends Explosion {
     constructor(game, x, y) {
       super(game, x, y);
-      this.image = document.getElementById("fireExplosion");
+      this.image = document.querySelector(".fireExplosion");
     }
   }
 
