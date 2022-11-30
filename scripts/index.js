@@ -108,7 +108,7 @@ window.addEventListener("load", function () {
       this.width = 120;
       this.height = 190;
       this.x = 20;
-      this.y = 100;
+      this.y = 160;
       this.frameX = 0;
       this.frameY = 0;
       this.maxFrame = 37;
@@ -118,7 +118,7 @@ window.addEventListener("load", function () {
       this.image = document.querySelector(".player");
       this.powerUp = false;
       this.powerUpTimer = 0;
-      this.powerUpLimit = 10000;
+      this.powerUpLimit = 8000;
     }
 
     update(deltaTime) {
@@ -153,7 +153,6 @@ window.addEventListener("load", function () {
         } else {
           this.powerUpTimer += deltaTime;
           this.frameY = 1;
-          this.game.ammo += 0.1;
         }
       }
     }
@@ -471,15 +470,15 @@ window.addEventListener("load", function () {
       this.explosions = [];
       this.enemyTimer = 0;
       this.enemyInterval = 2000;
-      this.ammo = 20;
-      this.maxAmmo = 50;
+      this.ammo = 10;
+      this.maxAmmo = 20;
       this.ammoTimer = 0;
       this.ammoInterval = 350;
       this.gameOver = false;
       this.score = 0;
       this.winningScore = 80;
       this.gameTime = 0;
-      this.timeLimit = 30000;
+      this.timeLimit = 60000;
       this.speed = 1;
       this.debug = false;
     }
@@ -490,8 +489,10 @@ window.addEventListener("load", function () {
       this.background.layer4.update();
       this.player.update(deltaTime);
       if (this.ammoTimer > this.ammoInterval) {
-        if (this.ammo < this.maxAmmo) this.ammo++;
-        this.ammoTimer = 0;
+        if (this.ammo < this.maxAmmo) {
+          this.ammo++;
+          this.ammoTimer = 0;
+        }
       } else {
         this.ammoTimer += deltaTime;
       }
@@ -518,7 +519,7 @@ window.addEventListener("load", function () {
             );
           }
           if (enemy.type === "lucky") this.player.enterPowerUp();
-          else if (!this.gameOver) this.score--;
+          else if (!this.gameOver && this.score > 0) this.score--;
         }
         this.player.projectiles.forEach((projectile) => {
           if (this.checkCollision(projectile, enemy)) {
